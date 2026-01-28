@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Venture Global Wins Repsol Arbitration Case",
+    "description": "ICC tribunal denies all Repsol claims over Calcasieu Pass commissioning delays, marking VG's second arbitration victory.",
+    "url": "https://example.com/vg-repsol-arbitration-2026",
+    "source": "Reuters",
+    "publishedAt": "2026-01-27T14:00:00Z",
+    "category": "LEGAL",
+    "sentiment": "POSITIVE",
+    "isVgRelated": true,
+    "tags": ["arbitration", "repsol", "calcasieu-pass", "legal"]
+  },
+  {
+    "title": "Venture Global Lowers FY2025 EBITDA Guidance",
+    "description": "VG cuts full-year EBITDA guidance to $6.18B-$6.24B from $6.35B-$6.50B due to volatile LNG prices and Q4 shipping constraints.",
+    "url": "https://example.com/vg-guidance-cut-2026",
+    "source": "Bloomberg",
+    "publishedAt": "2026-01-24T09:30:00Z",
+    "category": "CORPORATE",
+    "sentiment": "NEGATIVE",
+    "isVgRelated": true,
+    "tags": ["earnings", "guidance", "ebitda"]
+  },
+  {
+    "title": "JPMorgan Downgrades VG to Neutral, Sets $10 Price Target",
+    "description": "JPMorgan cuts VG rating citing near-term supply additions pressuring LNG prices and uncertainty around arbitration payouts.",
+    "url": "https://example.com/vg-jpmorgan-downgrade",
+    "source": "CNBC",
+    "publishedAt": "2026-01-24T11:00:00Z",
+    "category": "CORPORATE",
+    "sentiment": "NEGATIVE",
+    "isVgRelated": true,
+    "tags": ["analyst", "downgrade", "jpmorgan"]
+  },
+  {
+    "title": "Shell Challenges VG Arbitration Ruling in New York Court",
+    "description": "Shell files challenge alleging Venture Global withheld critical evidence in the Calcasieu Pass arbitration, including communications with Lummus Consultants.",
+    "url": "https://example.com/shell-vg-challenge-2026",
+    "source": "Financial Times",
+    "publishedAt": "2026-01-20T16:00:00Z",
+    "category": "LEGAL",
+    "sentiment": "NEGATIVE",
+    "isVgRelated": true,
+    "tags": ["shell", "arbitration", "court", "legal"]
+  },
+  {
+    "title": "US LNG Exports Hit Record in 2025 as New Capacity Comes Online",
+    "description": "US LNG exports reached record levels in 2025, driven by Plaquemines LNG commissioning and full Calcasieu Pass operations. The US now exports more LNG than any other country.",
+    "url": "https://example.com/us-lng-record-2025",
+    "source": "S&P Global",
+    "publishedAt": "2026-01-22T08:00:00Z",
+    "category": "LNG_MARKET",
+    "sentiment": "POSITIVE",
+    "isVgRelated": true,
+    "tags": ["us-lng", "exports", "record"]
+  },
+  {
+    "title": "European Gas Storage Falls Below 60% Ahead of Winter Peak",
+    "description": "EU gas storage levels have dropped below 60% for the first time this winter, supporting TTF prices and maintaining strong US-to-Europe LNG arbitrage.",
+    "url": "https://example.com/eu-storage-winter-2026",
+    "source": "Reuters",
+    "publishedAt": "2026-01-21T07:00:00Z",
+    "category": "LNG_MARKET",
+    "sentiment": "NEUTRAL",
+    "isVgRelated": false,
+    "tags": ["europe", "gas-storage", "ttf", "winter"]
+  },
+  {
+    "title": "CP2 LNG Phase 1 Construction Progress: 3,500 Workers On Site",
+    "description": "Venture Global reports CP2 site preparation 88% complete with over 3,500 workers deployed. LNG tank construction at 28% and engineering essentially complete at 99.5%.",
+    "url": "https://example.com/cp2-construction-jan-2026",
+    "source": "LNG Prime",
+    "publishedAt": "2026-01-19T10:00:00Z",
+    "category": "INFRASTRUCTURE",
+    "sentiment": "POSITIVE",
+    "isVgRelated": true,
+    "tags": ["cp2", "construction", "progress"]
+  },
+  {
+    "title": "Plaquemines LNG Expansion: FERC Application Filed for 32 Additional Trains",
+    "description": "Venture Global filed a formal FERC application for a brownfield expansion at Plaquemines LNG, adding 32 trains and over 30 MTPA capacity.",
+    "url": "https://example.com/plaquemines-expansion-ferc",
+    "source": "Natural Gas Intelligence",
+    "publishedAt": "2026-01-18T12:00:00Z",
+    "category": "REGULATORY",
+    "sentiment": "POSITIVE",
+    "isVgRelated": true,
+    "tags": ["plaquemines", "expansion", "ferc", "trains"]
+  },
+  {
+    "title": "Henry Hub Natural Gas Surges to $4.98 on Cold Weather",
+    "description": "Cold weather across the US Southeast drives Henry Hub spot prices to $4.98/MMBtu, the highest in three months, compressing LNG export margins.",
+    "url": "https://example.com/hh-spike-jan-2026",
+    "source": "EIA",
+    "publishedAt": "2026-01-25T15:00:00Z",
+    "category": "LNG_MARKET",
+    "sentiment": "NEUTRAL",
+    "isVgRelated": false,
+    "tags": ["henry-hub", "natural-gas", "cold-weather"]
+  },
+  {
+    "title": "Panama Canal Restrictions Reroute 94% of US LNG to Asia via Cape",
+    "description": "Transit restrictions at the Panama Canal mean nearly all US LNG bound for Asia takes the Cape of Good Hope route, adding 20 days and approximately $0.80/MMBtu to shipping costs.",
+    "url": "https://example.com/panama-canal-lng-reroute",
+    "source": "TradeWinds",
+    "publishedAt": "2026-01-16T09:00:00Z",
+    "category": "SHIPPING",
+    "sentiment": "NEGATIVE",
+    "isVgRelated": false,
+    "tags": ["panama-canal", "shipping", "cape-of-good-hope", "logistics"]
+  }
+]

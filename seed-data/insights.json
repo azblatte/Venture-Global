@@ -1,0 +1,142 @@
+[
+  {
+    "date": "2026-01-28",
+    "title": "Europe netback exceeds Asia by $1.20/MMBtu",
+    "body": "TTF-based European netback is $9.60/MMBtu vs JKM-based Asian netback of $8.40/MMBtu. This spread favors Atlantic basin deliveries. VG cargoes are likely to be directed to European terminals in the near term.",
+    "category": "PRICING",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-28",
+    "title": "Fleet utilization at 71% — 5 of 7 delivered vessels active",
+    "body": "Five of seven delivered VG vessels are currently at sea or loading. Venture Bayou is loading at Calcasieu Pass and Minerva Psara is at Plaquemines. Fleet utilization is above the 60% baseline.",
+    "category": "FLEET",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-28",
+    "title": "Plaquemines loading cadence: 2.3 cargoes/week",
+    "body": "Plaquemines LNG has averaged 2.3 cargoes per week over the past 30 days, up from 1.8 cargoes/week the prior month. Commissioning ramp-up continues on schedule with 34 of 36 trains producing.",
+    "category": "TERMINAL",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-27",
+    "title": "TTF-HH spread widened to $8.50/MMBtu",
+    "body": "The TTF-Henry Hub spread widened by $0.75 today, reaching $8.50/MMBtu. This represents the widest spread in 14 days and improves European netback for VG cargoes.",
+    "category": "PRICING",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-27",
+    "title": "VG wins Repsol arbitration — stock rises",
+    "body": "An ICC tribunal ruled in VG's favor, denying all Repsol claims. This is VG's second arbitration victory. The ruling validates VG's position on Calcasieu Pass commissioning timeline. Market reaction: VG stock up 4.2%.",
+    "category": "LEGAL",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-26",
+    "title": "Spread compression warning: JKM-HH below $6",
+    "body": "JKM-Henry Hub spread has compressed to $5.80/MMBtu, below the $6.00 warning threshold. Asian deliveries may be marginally uneconomic after accounting for $3.00 shipping and $0.50 regas. Monitor for further compression.",
+    "category": "PRICING",
+    "severity": "WARNING"
+  },
+  {
+    "date": "2026-01-26",
+    "title": "Vessel loitering detected: GasLog Savannah near Calcasieu",
+    "body": "GasLog Savannah has been within 50nm of Calcasieu Pass for 18 hours at reduced speed (3.2 knots). This may indicate a waiting pattern ahead of a scheduled loading window. ETA updated to Jan 30.",
+    "category": "FLEET",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-25",
+    "title": "Calcasieu Pass: 128 cargoes shipped in Q4 2025",
+    "body": "Combined Calcasieu Pass and Plaquemines terminals shipped 128 LNG cargoes in Q4 2025, a record quarter. This equates to approximately 4.1 million tonnes of LNG. Both terminals operating at high utilization.",
+    "category": "TERMINAL",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-25",
+    "title": "Henry Hub spikes to $4.98/MMBtu — 3-month high",
+    "body": "Henry Hub natural gas spot price rose to $4.98/MMBtu on cold weather demand across the U.S. Southeast. This compresses VG's feed gas margins by approximately $0.50/MMBtu vs the 30-day average.",
+    "category": "PRICING",
+    "severity": "WARNING"
+  },
+  {
+    "date": "2026-01-24",
+    "title": "CP2 construction: 88% site preparation complete",
+    "body": "CP2 LNG Phase 1 construction update: soil stabilization 88% complete, LNG tank construction 28% complete, engineering 99.5% complete. 3,500+ workers on site. Project remains on track for 2027 first LNG.",
+    "category": "TERMINAL",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-24",
+    "title": "VG stock at $9.61 — down 5% on lowered guidance",
+    "body": "VG shares declined to $9.61 after management lowered FY2025 EBITDA guidance to $6.18B-$6.24B from $6.35B-$6.50B, citing Q4 shipping constraints and lower LNG volumes. JPMorgan downgraded to Neutral with $10 PT.",
+    "category": "MARKET",
+    "severity": "WARNING"
+  },
+  {
+    "date": "2026-01-23",
+    "title": "Venture Acadia en route to India — first VG cargo to Dahej",
+    "body": "Venture Acadia departed Plaquemines LNG and is transiting via Cape of Good Hope to Dahej, India. ETA Feb 8. This appears to be VG's first owned-fleet delivery to the Indian subcontinent, a new market for the company.",
+    "category": "FLEET",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-22",
+    "title": "94% of US LNG to Asia now routing via Cape of Good Hope",
+    "body": "Panama Canal transit restrictions and Suez risk avoidance mean 94% of US LNG cargoes destined for Asia are routing via the Cape of Good Hope, adding approximately 20 days to voyage duration. This increases shipping costs by ~$0.80/MMBtu.",
+    "category": "SHIPPING",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-21",
+    "title": "Weekly fleet utilization: up 8% WoW",
+    "body": "VG fleet utilization increased from 62% to 71% week-over-week. Two additional vessels (Venture Iberia and GasLog Savannah) commenced voyages from Gulf terminals. This is the highest utilization reading in 3 weeks.",
+    "category": "FLEET",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-20",
+    "title": "Shell arbitration challenge filed in NY Supreme Court",
+    "body": "Shell has filed a challenge to VG's August 2025 arbitration victory in New York Supreme Court, alleging withheld evidence related to communications with independent engineer Lummus Consultants. Hearing expected Q2 2026.",
+    "category": "LEGAL",
+    "severity": "WARNING"
+  },
+  {
+    "date": "2026-01-19",
+    "title": "TTF forward curve backwardated — summer prices below $9",
+    "body": "European TTF forward curve shows summer 2026 contracts trading below $9/MMBtu, a significant backwardation from the current $12.40 spot. If sustained, summer netbacks to Europe could become marginal for US LNG.",
+    "category": "PRICING",
+    "severity": "WARNING"
+  },
+  {
+    "date": "2026-01-18",
+    "title": "Plaquemines expansion FERC application: 32 additional trains",
+    "body": "VG filed formal FERC application for Plaquemines brownfield expansion adding 32 modular trains and 30+ MTPA peak capacity. If approved, total Plaquemines complex could exceed 58 MTPA, making it one of the world's largest LNG facilities.",
+    "category": "TERMINAL",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-17",
+    "title": "VG shipping segment: $152M net income in 9 months",
+    "body": "VG's owned fleet generated $152 million in net income through the first nine months of 2025. Vertical integration into shipping is proving profitable, capturing margins that would otherwise go to third-party charter operators.",
+    "category": "MARKET",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-16",
+    "title": "Cold snap in NE Asia — JKM spikes 8% in 48 hours",
+    "body": "A polar vortex driving demand in Japan and South Korea pushed JKM up 8% over 48 hours. Asian netbacks have temporarily exceeded European netbacks, potentially redirecting flexible VG cargoes eastward.",
+    "category": "PRICING",
+    "severity": "INFO"
+  },
+  {
+    "date": "2026-01-15",
+    "title": "Tokyo Gas SPA commences: 1 MTPA for 20 years",
+    "body": "Tokyo Gas's 1 MTPA long-term SPA with VG, signed November 2025, is scheduled to commence deliveries from CP2 starting 2030. This brings VG's total contracted volume with Japanese buyers to approximately 4 MTPA.",
+    "category": "MARKET",
+    "severity": "INFO"
+  }
+]

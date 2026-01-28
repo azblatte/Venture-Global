@@ -1,0 +1,65 @@
+[
+  {
+    "name": "Calcasieu Pass",
+    "slug": "calcasieu-pass",
+    "location": "Cameron Parish, LA",
+    "latitude": 29.7697,
+    "longitude": -93.3444,
+    "capacityMtpa": 12.4,
+    "numberOfTrains": 18,
+    "stage": "OPERATIONAL",
+    "operationalSince": "2022-03-01T00:00:00Z",
+    "geofencePolygon": [
+      [29.785, -93.365],
+      [29.785, -93.325],
+      [29.755, -93.325],
+      [29.755, -93.365]
+    ]
+  },
+  {
+    "name": "Plaquemines LNG",
+    "slug": "plaquemines",
+    "location": "Plaquemines Parish, LA",
+    "latitude": 29.4033,
+    "longitude": -89.6569,
+    "capacityMtpa": 20.0,
+    "numberOfTrains": 36,
+    "stage": "COMMISSIONING",
+    "operationalSince": "2024-12-26T00:00:00Z",
+    "geofencePolygon": [
+      [29.420, -89.675],
+      [29.420, -89.640],
+      [29.390, -89.640],
+      [29.390, -89.675]
+    ]
+  },
+  {
+    "name": "CP2 LNG",
+    "slug": "cp2",
+    "location": "Cameron Parish, LA",
+    "latitude": 29.78,
+    "longitude": -93.32,
+    "capacityMtpa": 28.0,
+    "numberOfTrains": 18,
+    "stage": "CONSTRUCTION",
+    "operationalSince": null,
+    "geofencePolygon": [
+      [29.795, -93.340],
+      [29.795, -93.300],
+      [29.765, -93.300],
+      [29.765, -93.340]
+    ]
+  },
+  {
+    "name": "CP3 LNG",
+    "slug": "cp3",
+    "location": "Cameron Parish, LA",
+    "latitude": 29.79,
+    "longitude": -93.30,
+    "capacityMtpa": 30.0,
+    "numberOfTrains": 0,
+    "stage": "DEVELOPMENT",
+    "operationalSince": null,
+    "geofencePolygon": null
+  }
+]

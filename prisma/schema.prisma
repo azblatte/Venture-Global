@@ -1,0 +1,399 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── VESSELS ─────────────────────────────────────────
+
+model Vessel {
+  id               String           @id @default(cuid())
+  name             String           @unique
+  imo              String?          @unique
+  mmsi             String?          @unique
+  vesselType       VesselType       @default(LNG_CARRIER)
+  ownership        Ownership        @default(OWNED)
+  capacityCbm      Int
+  yearBuilt        Int?
+  builder          String?
+  flag             String?
+  status           VesselStatus     @default(UNKNOWN)
+  isDelivered      Boolean          @default(false)
+  expectedDelivery DateTime?
+  positions        VesselPosition[]
+  voyages          Voyage[]
+  cargoEvents      CargoEvent[]
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  @@index([status])
+}
+
+enum VesselType {
+  LNG_CARRIER
+  FSRU
+}
+
+enum Ownership {
+  OWNED
+  CHARTERED
+}
+
+enum VesselStatus {
+  AT_SEA
+  IN_PORT
+  AT_TERMINAL_LOADING
+  AT_TERMINAL_WAITING
+  LAID_UP
+  DRY_DOCK
+  UNKNOWN
+}
+
+model VesselPosition {
+  id         String   @id @default(cuid())
+  vesselId   String
+  vessel     Vessel   @relation(fields: [vesselId], references: [id], onDelete: Cascade)
+  latitude   Float
+  longitude  Float
+  heading    Float?
+  speedKnots Float?
+  course     Float?
+  draught    Float?
+  destination String?
+  eta        DateTime?
+  navStatus  String?
+  source     String   @default("stub")
+  recordedAt DateTime
+  createdAt  DateTime @default(now())
+
+  @@index([vesselId, recordedAt])
+  @@index([recordedAt])
+}
+
+model Voyage {
+  id             String       @id @default(cuid())
+  vesselId       String
+  vessel         Vessel       @relation(fields: [vesselId], references: [id], onDelete: Cascade)
+  departurePort  String?
+  departureLat   Float?
+  departureLon   Float?
+  departureTime  DateTime?
+  arrivalPort    String?
+  arrivalLat     Float?
+  arrivalLon     Float?
+  arrivalTime    DateTime?
+  status         VoyageStatus @default(IN_PROGRESS)
+  distanceNm     Float?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([vesselId, departureTime])
+}
+
+enum VoyageStatus {
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+// ─── TERMINALS ───────────────────────────────────────
+
+model Terminal {
+  id               String              @id @default(cuid())
+  name             String              @unique
+  slug             String              @unique
+  location         String
+  latitude         Float
+  longitude        Float
+  capacityMtpa     Float
+  numberOfTrains   Int
+  stage            TerminalStage       @default(OPERATIONAL)
+  operationalSince DateTime?
+  owner            String              @default("Venture Global LNG")
+  geofencePolygon  Json?
+  cargoEvents      CargoEvent[]
+  throughputs      TerminalThroughput[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+}
+
+enum TerminalStage {
+  OPERATIONAL
+  COMMISSIONING
+  CONSTRUCTION
+  DEVELOPMENT
+  PLANNED
+}
+
+model TerminalThroughput {
+  id             String   @id @default(cuid())
+  terminalId     String
+  terminal       Terminal @relation(fields: [terminalId], references: [id], onDelete: Cascade)
+  periodStart    DateTime
+  periodEnd      DateTime
+  cargoesLoaded  Int
+  volumeMt       Float?
+  utilizationPct Float?
+  createdAt      DateTime @default(now())
+
+  @@unique([terminalId, periodStart])
+  @@index([terminalId, periodStart])
+}
+
+// ─── CARGO ───────────────────────────────────────────
+
+model CargoEvent {
+  id                 String         @id @default(cuid())
+  vesselId           String?
+  vessel             Vessel?        @relation(fields: [vesselId], references: [id])
+  terminalId         String?
+  terminal           Terminal?      @relation(fields: [terminalId], references: [id])
+  eventType          CargoEventType
+  startTime          DateTime
+  endTime            DateTime?
+  dwellHours         Float?
+  estimatedVolumeCbm Float?
+  confidence         Float?
+  inferenceMethod    String?
+  notes              String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+
+  @@index([terminalId, startTime])
+  @@index([vesselId, startTime])
+}
+
+enum CargoEventType {
+  LOADING
+  WAITING
+  DEPARTURE
+  ARRIVAL_DISCHARGE
+}
+
+// ─── PRICING ─────────────────────────────────────────
+
+model PricePoint {
+  id        String         @id @default(cuid())
+  benchmark Benchmark
+  date      DateTime       @db.Date
+  price     Float
+  unit      String         @default("USD/MMBtu")
+  source    String
+  frequency PriceFrequency @default(DAILY)
+  createdAt DateTime       @default(now())
+
+  @@unique([benchmark, date, frequency])
+  @@index([benchmark, date])
+}
+
+enum Benchmark {
+  HENRY_HUB
+  TTF
+  JKM
+}
+
+enum PriceFrequency {
+  DAILY
+  WEEKLY
+  MONTHLY
+}
+
+model SpreadSnapshot {
+  id             String   @id @default(cuid())
+  date           DateTime @db.Date @unique
+  ttfHhSpread    Float
+  jkmHhSpread    Float
+  netbackEurope  Float?
+  netbackAsia    Float?
+  shippingUsEu   Float    @default(1.30)
+  shippingUsAsia Float    @default(3.00)
+  regasProxy     Float    @default(0.50)
+  createdAt      DateTime @default(now())
+}
+
+// ─── STOCK ───────────────────────────────────────────
+
+model StockPrice {
+  id        String   @id @default(cuid())
+  symbol    String   @default("VG")
+  date      DateTime @db.Date
+  open      Float
+  high      Float
+  low       Float
+  close     Float
+  volume    BigInt
+  source    String   @default("alpha_vantage")
+  createdAt DateTime @default(now())
+
+  @@unique([symbol, date])
+  @@index([symbol, date])
+}
+
+// ─── NEWS ────────────────────────────────────────────
+
+model NewsArticle {
+  id             String       @id @default(cuid())
+  title          String
+  description    String?
+  content        String?      @db.Text
+  url            String       @unique
+  imageUrl       String?
+  source         String
+  author         String?
+  publishedAt    DateTime
+  category       NewsCategory @default(GENERAL)
+  sentiment      Sentiment?
+  relevanceScore Float?
+  isVgRelated    Boolean      @default(false)
+  tags           String[]
+  createdAt      DateTime     @default(now())
+
+  @@index([publishedAt])
+  @@index([category])
+  @@index([isVgRelated])
+}
+
+enum NewsCategory {
+  GENERAL
+  LNG_MARKET
+  REGULATORY
+  LEGAL
+  CORPORATE
+  INFRASTRUCTURE
+  SHIPPING
+  ENVIRONMENT
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+// ─── INSIGHTS ────────────────────────────────────────
+
+model Insight {
+  id        String          @id @default(cuid())
+  date      DateTime        @db.Date
+  title     String
+  body      String          @db.Text
+  category  InsightCategory
+  severity  Severity        @default(INFO)
+  source    String          @default("system")
+  metadata  Json?
+  isRead    Boolean         @default(false)
+  createdAt DateTime        @default(now())
+
+  @@index([date])
+  @@index([category])
+  @@index([severity])
+}
+
+enum InsightCategory {
+  PRICING
+  FLEET
+  TERMINAL
+  LEGAL
+  NEWS
+  MARKET
+  SYSTEM
+}
+
+enum Severity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+// ─── ALERTS ──────────────────────────────────────────
+
+model AlertRule {
+  id              String           @id @default(cuid())
+  name            String
+  description     String?
+  metric          String
+  condition       AlertCondition
+  threshold       Float?
+  thresholdStr    String?
+  isEnabled       Boolean          @default(true)
+  cooldownMinutes Int              @default(60)
+  lastTriggered   DateTime?
+  triggeredAlerts TriggeredAlert[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+enum AlertCondition {
+  ABOVE
+  BELOW
+  EQUALS
+  CHANGES_TO
+  CROSSES_ABOVE
+  CROSSES_BELOW
+}
+
+model TriggeredAlert {
+  id             String    @id @default(cuid())
+  ruleId         String
+  rule           AlertRule @relation(fields: [ruleId], references: [id], onDelete: Cascade)
+  message        String
+  currentValue   String
+  isAcknowledged Boolean   @default(false)
+  triggeredAt    DateTime  @default(now())
+
+  @@index([ruleId, triggeredAt])
+  @@index([isAcknowledged])
+}
+
+// ─── PROVIDER HEALTH ─────────────────────────────────
+
+model ProviderStatus {
+  id           String         @id @default(cuid())
+  providerName String         @unique
+  displayName  String
+  status       ProviderHealth @default(UNKNOWN)
+  lastSuccess  DateTime?
+  lastFailure  DateTime?
+  lastError    String?
+  requestCount Int            @default(0)
+  dailyLimit   Int?
+  avgLatencyMs Int?
+  metadata     Json?
+  updatedAt    DateTime       @updatedAt
+}
+
+enum ProviderHealth {
+  HEALTHY
+  DEGRADED
+  DOWN
+  RATE_LIMITED
+  UNKNOWN
+}
+
+// ─── VG PULSE SCORE ──────────────────────────────────
+
+model PulseScoreSnapshot {
+  id                 String   @id @default(cuid())
+  date               DateTime @db.Date @unique
+  overallScore       Float
+  spreadComponent    Float
+  fleetComponent     Float
+  terminalComponent  Float
+  newsLegalComponent Float
+  stockComponent     Float?
+  breakdown          Json
+  createdAt          DateTime @default(now())
+}
+
+// ─── APP SETTINGS ────────────────────────────────────
+
+model AppSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+  updatedAt   DateTime @updatedAt
+}
