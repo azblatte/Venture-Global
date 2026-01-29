@@ -4,7 +4,7 @@ import { Card, CardSubtitle, CardTitle, CardValue } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import PriceLineChart from "@/components/charts/PriceLineChart";
 import SpreadAreaChart from "@/components/charts/SpreadAreaChart";
-import FleetMap from "@/components/map/FleetMap";
+import FleetMapClient from "@/components/map/FleetMapClient";
 import { getInsights, getPricingHistory, getTerminals, getVesselPositions, getVessels } from "@/lib/seed";
 import { calculateSpreads, latestByBenchmark, SHIPPING_US_ASIA, SHIPPING_US_EU, REGAS_PROXY } from "@/lib/pricing";
 import { computePulseScore } from "@/lib/pulse";
@@ -122,7 +122,7 @@ export default async function DashboardPage() {
           <CardTitle>Fleet & Terminals Live Map</CardTitle>
           <CardSubtitle>Latest AIS positions vs VG terminals</CardSubtitle>
           <div className="mt-4">
-            <FleetMap positions={positions} terminals={terminals} height="320px" />
+            <FleetMapClient positions={positions} terminals={terminals} height="320px" />
           </div>
         </Card>
       </section>

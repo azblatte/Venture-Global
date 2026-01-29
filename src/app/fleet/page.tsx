@@ -1,12 +1,10 @@
-import dynamic from "next/dynamic";
 import Header from "@/components/layout/Header";
 import PageShell from "@/components/layout/PageShell";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
+import FleetMapClient from "@/components/map/FleetMapClient";
 import { getTerminals, getVesselPositions, getVessels } from "@/lib/seed";
 import { formatNumber } from "@/lib/utils";
-
-const FleetMap = dynamic(() => import("@/components/map/FleetMap"), { ssr: false });
 
 function latestPositions(positions: Awaited<ReturnType<typeof getVesselPositions>>) {
   const map = new Map<string, (typeof positions)[number]>();
@@ -40,7 +38,7 @@ export default async function FleetPage() {
           <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Fleet Map</h3>
           <p className="mt-2 text-sm text-slate-500">Live positions anchored to VG terminals.</p>
           <div className="mt-4">
-            <FleetMap positions={positions} terminals={terminals} height="420px" />
+            <FleetMapClient positions={positions} terminals={terminals} height="420px" />
           </div>
         </Card>
         <Card>

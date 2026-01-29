@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
 import type { VesselPosition } from "@/types/vessel";
 import type { Terminal } from "@/types/terminal";
 
-interface FleetMapProps {
+export interface FleetMapProps {
   positions: VesselPosition[];
   terminals: Terminal[];
   height?: string;
