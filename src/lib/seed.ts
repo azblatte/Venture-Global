@@ -7,6 +7,7 @@ import type { PricePoint } from "@/types/pricing";
 import type { Insight } from "@/types/insight";
 import type { NewsArticle } from "@/types/news";
 import type { SpaDeal } from "@/types/spa";
+import { getPricingCache } from "@/lib/pricing-cache";
 
 const cache = new Map<string, unknown>();
 
@@ -51,6 +52,10 @@ export async function getTerminals(): Promise<Terminal[]> {
 }
 
 export async function getPricingHistory(): Promise<PricePoint[]> {
+  const cache = getPricingCache();
+  if (cache?.pricing?.length) {
+    return cache.pricing;
+  }
   return loadJson<PricePoint[]>("pricing-history.json", []);
 }
 
@@ -68,4 +73,20 @@ export async function getSpaDeals(): Promise<SpaDeal[]> {
     ...deal,
     id: `spa-${index + 1}`,
   }));
+}
+
+export interface SiteMeta {
+  lastPriceUpdate: string;
+  source: string;
+}
+
+export async function getMeta(): Promise<SiteMeta> {
+  const cache = getPricingCache();
+  if (cache?.meta) {
+    return cache.meta;
+  }
+  return loadJson<SiteMeta>("meta.json", {
+    lastPriceUpdate: new Date().toISOString(),
+    source: "Unknown",
+  });
 }

@@ -1,13 +1,14 @@
-// Revalidate every 24 hours (86400 seconds) - free on Vercel
-export const revalidate = 86400;
-
 import Header from "@/components/layout/Header";
 import PageShell from "@/components/layout/PageShell";
 import { Card } from "@/components/ui/Card";
 import PriceLineChart from "@/components/charts/PriceLineChart";
 import SpreadAreaChart from "@/components/charts/SpreadAreaChart";
-import { getPricingHistory } from "@/lib/seed";
+import { getPricingHistory, getMeta } from "@/lib/seed";
 import { calculateSpreads, latestByBenchmark, SHIPPING_US_EU, SHIPPING_US_ASIA } from "@/lib/pricing";
+import { RefreshButton } from "@/components/ui/RefreshButton";
+
+// Revalidate every 24 hours (86400 seconds) - free on Vercel
+export const revalidate = 86400;
 
 function toChartSeries(pricing: Awaited<ReturnType<typeof getPricingHistory>>) {
   const map = new Map<string, { date: string; HENRY_HUB: number; TTF: number; JKM: number }>();
@@ -26,7 +27,7 @@ const VG_OPERATING_COST = 0.69;
 const VG_LIQUEFACTION_FEE = 2.0;
 
 export default async function PricingPage() {
-  const pricing = await getPricingHistory();
+  const [pricing, meta] = await Promise.all([getPricingHistory(), getMeta()]);
   const spreads = calculateSpreads(pricing);
   const series = toChartSeries(pricing).slice(-90);
   const spreadSeries = spreads.slice(-90);
@@ -49,6 +50,18 @@ export default async function PricingPage() {
         title="Pricing & Spreads"
         subtitle="VG buys gas at Henry Hub, sells globally at TTF/JKM. The spread is the opportunity."
       />
+
+      <section>
+        <Card className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold text-slate-900">Pricing refresh controls</p>
+            <p className="text-xs text-slate-500">
+              Henry Hub is sourced from EIA (free). TTF/JKM are estimated spreads unless you add a paid provider.
+            </p>
+          </div>
+          <RefreshButton lastUpdated={meta.lastPriceUpdate} source={meta.source} />
+        </Card>
+      </section>
 
       <section className="grid gap-4 sm:grid-cols-3">
         <Card>

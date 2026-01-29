@@ -6,12 +6,14 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/dashboard", label: "Overview" },
+  { href: "/vg-101", label: "VG 101" },
   { href: "/fleet", label: "Fleet Tracker" },
   { href: "/terminals", label: "Terminals" },
   { href: "/pricing", label: "Pricing Lab" },
   { href: "/contracts", label: "SPA Contracts" },
   { href: "/news", label: "News & Events" },
   { href: "/insights", label: "Insights" },
+  { href: "/assistant", label: "AI Analyst" },
 ];
 
 export default function Sidebar() {
