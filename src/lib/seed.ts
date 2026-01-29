@@ -7,7 +7,8 @@ import type { PricePoint } from "@/types/pricing";
 import type { Insight } from "@/types/insight";
 import type { NewsArticle } from "@/types/news";
 import type { SpaDeal } from "@/types/spa";
-import { getPricingCache } from "@/lib/pricing-cache";
+import { getPricingCache, setPricingCache } from "@/lib/pricing-cache";
+import { prisma } from "@/lib/db";
 
 const cache = new Map<string, unknown>();
 
@@ -56,6 +57,15 @@ export async function getPricingHistory(): Promise<PricePoint[]> {
   if (cache?.pricing?.length) {
     return cache.pricing;
   }
+  const dbPricing = await getPricingFromDb();
+  if (dbPricing?.length) {
+    const meta = (await getMetaFromDb()) ?? {
+      lastPriceUpdate: new Date().toISOString(),
+      source: "Database",
+    };
+    setPricingCache(dbPricing, meta);
+    return dbPricing;
+  }
   return loadJson<PricePoint[]>("pricing-history.json", []);
 }
 
@@ -85,8 +95,50 @@ export async function getMeta(): Promise<SiteMeta> {
   if (cache?.meta) {
     return cache.meta;
   }
+  const dbMeta = await getMetaFromDb();
+  if (dbMeta) {
+    setPricingCache(cache?.pricing ?? [], dbMeta);
+    return dbMeta;
+  }
   return loadJson<SiteMeta>("meta.json", {
     lastPriceUpdate: new Date().toISOString(),
     source: "Unknown",
   });
+}
+
+async function getPricingFromDb(): Promise<PricePoint[] | null> {
+  if (!process.env.DATABASE_URL) return null;
+  try {
+    const points = await prisma.pricePoint.findMany({
+      where: { frequency: "DAILY" },
+      orderBy: { date: "asc" },
+    });
+    if (!points.length) return null;
+    return points.map((point) => ({
+      benchmark: point.benchmark,
+      date: point.date.toISOString().slice(0, 10),
+      price: point.price,
+      source: point.source,
+      frequency: point.frequency,
+    }));
+  } catch (error) {
+    console.error("Failed to load pricing from DB:", error);
+    return null;
+  }
+}
+
+async function getMetaFromDb(): Promise<SiteMeta | null> {
+  if (!process.env.DATABASE_URL) return null;
+  try {
+    const setting = await prisma.appSetting.findUnique({ where: { key: "pricing_meta" } });
+    if (!setting?.value || typeof setting.value !== "object") return null;
+    const value = setting.value as Record<string, unknown>;
+    const lastPriceUpdate = typeof value.lastPriceUpdate === "string" ? value.lastPriceUpdate : null;
+    const source = typeof value.source === "string" ? value.source : null;
+    if (!lastPriceUpdate || !source) return null;
+    return { lastPriceUpdate, source };
+  } catch (error) {
+    console.error("Failed to load pricing meta from DB:", error);
+    return null;
+  }
 }

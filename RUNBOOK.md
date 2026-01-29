@@ -62,5 +62,7 @@ CRON_SECRET=changeme
 ```
 
 ## Notes
-- The UI renders from seed JSON first; Prisma DB is ready to be wired to live ingestion.
-- No data is fabricated beyond the seed files. Replace seeds with real data when ready.
+- The UI renders from seed JSON if no database is configured.
+- If `DATABASE_URL` is set, pricing updates are stored in Postgres and survive Vercel cold starts.
+- The daily price job uses **EIA Henry Hub** (free, 1‑day delayed). TTF/JKM are estimated unless you add a paid provider.
+- No data is fabricated beyond the seed files and the clearly labeled TTF/JKM estimates.

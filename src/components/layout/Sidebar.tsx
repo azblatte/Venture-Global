@@ -13,7 +13,6 @@ const navItems = [
   { href: "/contracts", label: "SPA Contracts" },
   { href: "/news", label: "News & Events" },
   { href: "/insights", label: "Insights" },
-  { href: "/assistant", label: "AI Analyst" },
 ];
 
 export default function Sidebar() {

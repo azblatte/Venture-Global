@@ -3,6 +3,7 @@ import { writeFile } from "fs/promises";
 import { join } from "path";
 import { setPricingCache } from "@/lib/pricing-cache";
 import type { PricePoint } from "@/types/pricing";
+import { prisma } from "@/lib/db";
 
 // EIA API for Henry Hub natural gas spot prices (free, 1-day delayed)
 const EIA_API_KEY = process.env.EIA_API_KEY || ""; // Optional - works without key but rate limited
@@ -96,6 +97,48 @@ export async function GET(request: Request) {
       lastPriceUpdate: new Date().toISOString(),
       source: "EIA (Henry Hub) + Estimated TTF/JKM",
     };
+
+    // Persist to database when configured (recommended for Vercel)
+    if (process.env.DATABASE_URL) {
+      try {
+        await prisma.$transaction([
+          ...newPrices.map((price) =>
+            prisma.pricePoint.upsert({
+              where: {
+                benchmark_date_frequency: {
+                  benchmark: price.benchmark,
+                  date: new Date(price.date),
+                  frequency: price.frequency,
+                },
+              },
+              update: {
+                price: price.price,
+                source: price.source,
+              },
+              create: {
+                benchmark: price.benchmark,
+                date: new Date(price.date),
+                price: price.price,
+                source: price.source,
+                frequency: price.frequency,
+                unit: "USD/MMBtu",
+              },
+            })
+          ),
+          prisma.appSetting.upsert({
+            where: { key: "pricing_meta" },
+            update: { value: meta },
+            create: {
+              key: "pricing_meta",
+              value: meta,
+              description: "Pricing refresh metadata",
+            },
+          }),
+        ]);
+      } catch (error) {
+        console.error("Failed to write pricing to DB:", error);
+      }
+    }
 
     // Update in-memory cache (used by SSR pages)
     setPricingCache(newPrices, meta);
