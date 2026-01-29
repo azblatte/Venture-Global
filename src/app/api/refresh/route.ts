@@ -5,12 +5,13 @@ export async function POST() {
   try {
     // Revalidate all pricing-related pages
     revalidatePath("/pricing");
+    revalidatePath("/lng-dashboard");
     revalidatePath("/dashboard");
     revalidatePath("/");
 
     return NextResponse.json({
       success: true,
-      revalidated: ["/pricing", "/dashboard", "/"],
+      revalidated: ["/pricing", "/lng-dashboard", "/dashboard", "/"],
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
