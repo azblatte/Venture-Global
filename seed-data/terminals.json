@@ -9,6 +9,9 @@
     "numberOfTrains": 18,
     "stage": "OPERATIONAL",
     "operationalSince": "2022-03-01T00:00:00Z",
+    "fid": "2019-08-19T00:00:00Z",
+    "liquefactionFee": 1.95,
+    "operatingCost": 0.69,
     "geofencePolygon": [
       [29.785, -93.365],
       [29.785, -93.325],
@@ -22,10 +25,14 @@
     "location": "Plaquemines Parish, LA",
     "latitude": 29.4033,
     "longitude": -89.6569,
-    "capacityMtpa": 20.0,
+    "capacityMtpa": 27.2,
     "numberOfTrains": 36,
     "stage": "COMMISSIONING",
     "operationalSince": "2024-12-26T00:00:00Z",
+    "fid": "2022-05-25T00:00:00Z",
+    "expectedCod": "2026-06-01T00:00:00Z",
+    "liquefactionFee": 2.14,
+    "operatingCost": 0.69,
     "geofencePolygon": [
       [29.420, -89.675],
       [29.420, -89.640],
@@ -42,7 +49,10 @@
     "capacityMtpa": 28.0,
     "numberOfTrains": 18,
     "stage": "CONSTRUCTION",
-    "operationalSince": null,
+    "fid": "2025-07-01T00:00:00Z",
+    "expectedCod": "2028-01-01T00:00:00Z",
+    "liquefactionFee": 2.30,
+    "operatingCost": 0.69,
     "geofencePolygon": [
       [29.795, -93.340],
       [29.795, -93.300],
@@ -56,10 +66,12 @@
     "location": "Cameron Parish, LA",
     "latitude": 29.79,
     "longitude": -93.30,
-    "capacityMtpa": 30.0,
+    "capacityMtpa": 35.0,
     "numberOfTrains": 0,
     "stage": "DEVELOPMENT",
-    "operationalSince": null,
+    "expectedCod": "2031-01-01T00:00:00Z",
+    "liquefactionFee": 2.30,
+    "operatingCost": 0.69,
     "geofencePolygon": null
   }
 ]

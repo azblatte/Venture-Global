@@ -12,5 +12,9 @@ export interface Terminal {
   stage: TerminalStage;
   operationalSince?: string;
   owner?: string;
+  liquefactionFee?: number; // $/MMBtu charged to SPA customers
+  operatingCost?: number; // $/MMBtu internal cost
+  fid?: string; // Final Investment Decision date
+  expectedCod?: string; // Expected Commercial Operations Date
   geofencePolygon?: [number, number][];
 }

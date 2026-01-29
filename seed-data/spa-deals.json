@@ -1,0 +1,235 @@
+[
+  {
+    "buyer": "Shell",
+    "country": "UK/Global",
+    "region": "GLOBAL",
+    "volumeMtpa": 2.0,
+    "termYears": 20,
+    "startYear": 2023,
+    "project": "Calcasieu Pass",
+    "notes": "Major supermajor offtaker"
+  },
+  {
+    "buyer": "BP",
+    "country": "UK",
+    "region": "EUROPE",
+    "volumeMtpa": 2.0,
+    "termYears": 20,
+    "startYear": 2025,
+    "project": "Calcasieu Pass",
+    "notes": "First cargo lifted April 2025"
+  },
+  {
+    "buyer": "Edison S.p.A.",
+    "country": "Italy",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2023,
+    "project": "Calcasieu Pass",
+    "notes": "Part of EDF group"
+  },
+  {
+    "buyer": "Repsol",
+    "country": "Spain",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2023,
+    "project": "Calcasieu Pass",
+    "notes": "VG won arbitration Jan 2026"
+  },
+  {
+    "buyer": "Galp Energia",
+    "country": "Portugal",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2025,
+    "project": "Calcasieu Pass",
+    "signedDate": "2018",
+    "notes": "Deliveries commenced 2025"
+  },
+  {
+    "buyer": "PGNiG / PKN Orlen",
+    "country": "Poland",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2023,
+    "project": "Calcasieu Pass",
+    "notes": "Part of 3.5 MTPA total deal"
+  },
+  {
+    "buyer": "PGNiG / PKN Orlen",
+    "country": "Poland",
+    "region": "EUROPE",
+    "volumeMtpa": 2.5,
+    "termYears": 20,
+    "startYear": 2025,
+    "project": "Plaquemines LNG",
+    "notes": "Expanded from 1.0 MTPA in 2019"
+  },
+  {
+    "buyer": "EDF",
+    "country": "France",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2026,
+    "project": "Plaquemines LNG",
+    "signedDate": "2020-02",
+    "notes": "FOB basis"
+  },
+  {
+    "buyer": "EnBW",
+    "country": "Germany",
+    "region": "EUROPE",
+    "volumeMtpa": 2.0,
+    "termYears": 20,
+    "startYear": 2026,
+    "project": "Plaquemines LNG",
+    "notes": "Germany's first long-term US LNG SPA, expanded to 2.0 MTPA"
+  },
+  {
+    "buyer": "SEFE (Wingas)",
+    "country": "Germany",
+    "region": "EUROPE",
+    "volumeMtpa": 2.25,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG",
+    "signedDate": "2023",
+    "notes": "Makes VG largest LNG supplier to Germany"
+  },
+  {
+    "buyer": "Petronas LNG",
+    "country": "Malaysia",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2026,
+    "project": "Plaquemines LNG"
+  },
+  {
+    "buyer": "Petronas LNG",
+    "country": "Malaysia",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG"
+  },
+  {
+    "buyer": "ExxonMobil",
+    "country": "USA/Global",
+    "region": "GLOBAL",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2025,
+    "project": "Plaquemines LNG"
+  },
+  {
+    "buyer": "ExxonMobil",
+    "country": "USA/Global",
+    "region": "GLOBAL",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG"
+  },
+  {
+    "buyer": "Eni S.p.A.",
+    "country": "Italy",
+    "region": "EUROPE",
+    "volumeMtpa": 2.0,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG",
+    "signedDate": "2025-07",
+    "notes": "Eni's first US LNG deal"
+  },
+  {
+    "buyer": "JERA",
+    "country": "Japan",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2026,
+    "project": "CP2 LNG",
+    "notes": "Part of JERA's 5.5 MTPA US LNG portfolio"
+  },
+  {
+    "buyer": "Mitsui & Co.",
+    "country": "Japan",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2030,
+    "project": "CP2 LNG",
+    "signedDate": "2025-11"
+  },
+  {
+    "buyer": "Inpex",
+    "country": "Japan",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2028,
+    "project": "CP2 LNG",
+    "signedDate": "2025",
+    "notes": "Inpex's first VG deal"
+  },
+  {
+    "buyer": "Tokyo Gas",
+    "country": "Japan",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2030,
+    "project": "CP3 LNG",
+    "signedDate": "2025-11",
+    "notes": "Tokyo Gas's first US LNG contract, destination-free"
+  },
+  {
+    "buyer": "Kyushu Electric",
+    "country": "Japan",
+    "region": "ASIA",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG",
+    "signedDate": "2025"
+  },
+  {
+    "buyer": "Atlantic-SEE",
+    "country": "Greece",
+    "region": "EUROPE",
+    "volumeMtpa": 0.5,
+    "termYears": 20,
+    "startYear": 2030,
+    "project": "CP3 LNG",
+    "notes": "First-ever US LNG long-term supply to Greece, JV of DEPA and AKTOR"
+  },
+  {
+    "buyer": "Sinopec / Unipec",
+    "country": "China",
+    "region": "ASIA",
+    "volumeMtpa": 4.0,
+    "termYears": 20,
+    "startYear": 2026,
+    "project": "Plaquemines LNG",
+    "signedDate": "2021",
+    "notes": "Largest LNG volume ever signed by Chinese company without equity stake (2.8 + 1.2 MTPA)"
+  },
+  {
+    "buyer": "Naturgy",
+    "country": "Spain",
+    "region": "EUROPE",
+    "volumeMtpa": 1.0,
+    "termYears": 20,
+    "startYear": 2027,
+    "project": "CP2 LNG",
+    "signedDate": "2025"
+  }
+]

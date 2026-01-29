@@ -18,7 +18,7 @@ interface ChartProps {
 export default function PriceLineChart({ data }: ChartProps) {
   return (
     <div className="h-72 w-full">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={200}>
         <LineChart data={data} margin={{ top: 10, right: 16, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
           <XAxis dataKey="date" tick={{ fontSize: 10 }} stroke="#94a3b8" />

@@ -9,6 +9,7 @@ const navItems = [
   { href: "/fleet", label: "Fleet Tracker" },
   { href: "/terminals", label: "Terminals" },
   { href: "/pricing", label: "Pricing Lab" },
+  { href: "/contracts", label: "SPA Contracts" },
   { href: "/news", label: "News & Events" },
   { href: "/insights", label: "Insights" },
 ];

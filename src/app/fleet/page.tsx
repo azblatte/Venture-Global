@@ -1,3 +1,6 @@
+// Revalidate every 24 hours (86400 seconds) - free on Vercel
+export const revalidate = 86400;
+
 import Header from "@/components/layout/Header";
 import PageShell from "@/components/layout/PageShell";
 import { Card } from "@/components/ui/Card";
@@ -17,6 +20,18 @@ function latestPositions(positions: Awaited<ReturnType<typeof getVesselPositions
   return map;
 }
 
+function formatTimeAgo(dateStr: string): string {
+  const date = new Date(dateStr);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffDays > 0) return `${diffDays}d ago`;
+  if (diffHours > 0) return `${diffHours}h ago`;
+  return "Just now";
+}
+
 export default async function FleetPage() {
   const [vessels, positions, terminals] = await Promise.all([
     getVessels(),
@@ -25,6 +40,10 @@ export default async function FleetPage() {
   ]);
 
   const latest = latestPositions(positions);
+  const positionsArray = Array.from(latest.values());
+  const ownedCount = vessels.filter((v) => v.ownership === "OWNED").length;
+  const charteredCount = vessels.filter((v) => v.ownership === "CHARTERED").length;
+  const atSeaCount = vessels.filter((v) => v.status === "AT_SEA").length;
 
   return (
     <PageShell>
@@ -33,34 +52,48 @@ export default async function FleetPage() {
         subtitle="Owned + chartered LNG carriers with latest AIS position and delivery status."
       />
 
-      <section className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+      <section>
         <Card>
-          <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Fleet Map</h3>
-          <p className="mt-2 text-sm text-slate-500">Live positions anchored to VG terminals.</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Fleet Map</h3>
+              <p className="mt-1 text-sm text-slate-500">
+                {atSeaCount} vessels at sea, {vessels.length - atSeaCount} in port/unknown
+              </p>
+            </div>
+            <div className="flex gap-4 text-xs">
+              <div className="flex items-center gap-1">
+                <span className="h-3 w-3 rounded-full bg-sky-500" />
+                <span className="text-slate-500">Vessels</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <span className="h-3 w-3 rounded-full bg-orange-500" />
+                <span className="text-slate-500">Terminals</span>
+              </div>
+            </div>
+          </div>
           <div className="mt-4">
-            <FleetMapClient positions={positions} terminals={terminals} height="420px" />
+            <FleetMapClient positions={positionsArray} terminals={terminals} height="500px" />
           </div>
         </Card>
+      </section>
+
+      <section className="grid gap-4 sm:grid-cols-4">
         <Card>
-          <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Fleet Summary</h3>
-          <div className="mt-4 space-y-4">
-            <div>
-              <p className="text-3xl font-semibold text-slate-900">{vessels.length}</p>
-              <p className="text-sm text-slate-500">Vessels in registry</p>
-            </div>
-            <div>
-              <p className="text-3xl font-semibold text-slate-900">
-                {vessels.filter((vessel) => vessel.isDelivered).length}
-              </p>
-              <p className="text-sm text-slate-500">Delivered</p>
-            </div>
-            <div>
-              <p className="text-3xl font-semibold text-slate-900">
-                {vessels.filter((vessel) => vessel.ownership === "CHARTERED").length}
-              </p>
-              <p className="text-sm text-slate-500">Chartered</p>
-            </div>
-          </div>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Total Fleet</p>
+          <p className="mt-2 text-3xl font-semibold text-slate-900">{vessels.length}</p>
+        </Card>
+        <Card>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Owned</p>
+          <p className="mt-2 text-3xl font-semibold text-emerald-600">{ownedCount}</p>
+        </Card>
+        <Card>
+          <p className="text-xs uppercase tracking-wide text-slate-400">Chartered</p>
+          <p className="mt-2 text-3xl font-semibold text-sky-600">{charteredCount}</p>
+        </Card>
+        <Card>
+          <p className="text-xs uppercase tracking-wide text-slate-400">At Sea</p>
+          <p className="mt-2 text-3xl font-semibold text-orange-500">{atSeaCount}</p>
         </Card>
       </section>
 
@@ -75,8 +108,9 @@ export default async function FleetPage() {
                   <th className="py-3">IMO</th>
                   <th className="py-3">Capacity</th>
                   <th className="py-3">Status</th>
-                  <th className="py-3">Last Position</th>
+                  <th className="py-3">Position</th>
                   <th className="py-3">Destination</th>
+                  <th className="py-3">Last Updated</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200/60">
@@ -91,12 +125,17 @@ export default async function FleetPage() {
                       <td className="py-4 text-slate-600">{vessel.imo ?? "TBD"}</td>
                       <td className="py-4 text-slate-600">{formatNumber(vessel.capacityCbm)} cbm</td>
                       <td className="py-4">
-                        <Badge tone={vessel.status === "AT_SEA" ? "emerald" : "slate"}>{vessel.status}</Badge>
+                        <Badge tone={vessel.status === "AT_SEA" ? "emerald" : vessel.status === "IN_PORT" ? "sky" : "slate"}>
+                          {vessel.status.replace("_", " ")}
+                        </Badge>
                       </td>
                       <td className="py-4 text-slate-600">
                         {position ? `${position.latitude.toFixed(2)}, ${position.longitude.toFixed(2)}` : "-"}
                       </td>
                       <td className="py-4 text-slate-600">{position?.destination ?? "-"}</td>
+                      <td className="py-4 text-slate-500 text-xs">
+                        {position?.recordedAt ? formatTimeAgo(position.recordedAt) : "-"}
+                      </td>
                     </tr>
                   );
                 })}
