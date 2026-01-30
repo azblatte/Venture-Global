@@ -65,5 +65,6 @@ CRON_SECRET=changeme
 - The UI renders from seed JSON if no database is configured.
 - If `DATABASE_URL` is set, pricing updates are stored in Postgres and survive Vercel cold starts.
 - The daily price job uses **EIA Henry Hub** (free, 1‑day delayed). TTF/JKM are estimated unless you add a paid provider.
+- If the EIA API key is missing, the refresh button will fall back to cached data and show a message.
 - No data is fabricated beyond the seed files and the clearly labeled TTF/JKM estimates.
 - The **LNG Dashboard** (`/lng-dashboard`) uses Plotly and models weekly cargo flows for visualization. Replace modeled cargoes with a real EIA LNG exports series if you add a provider.

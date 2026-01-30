@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { writeFile } from "fs/promises";
+import { readFile, writeFile } from "fs/promises";
 import { join } from "path";
 import { setPricingCache } from "@/lib/pricing-cache";
 import type { PricePoint } from "@/types/pricing";
@@ -25,20 +25,37 @@ export async function GET(request: Request) {
   // Verify cron secret to prevent unauthorized calls
   const authHeader = request.headers.get("authorization");
   const manual = new URL(request.url).searchParams.get("manual") === "1";
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}` && !manual) {
+  const isCron = request.headers.get("x-vercel-cron") === "1";
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}` && !manual && !isCron) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
+    if (!EIA_API_KEY) {
+      const cached = await getCachedLatest();
+      return NextResponse.json({
+        success: false,
+        cached: true,
+        error: "Missing EIA_API_KEY",
+        latestDate: cached?.latestDate ?? null,
+        latestHH: cached?.latestHH ?? null,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     // Fetch Henry Hub data from EIA
-    const eiaResponse = await fetch(EIA_HH_URL);
+    const eiaResponse = await fetch(EIA_HH_URL, { cache: "no-store" });
 
     if (!eiaResponse.ok) {
       // If EIA fails, return current data with error note
+      const cached = await getCachedLatest();
       return NextResponse.json({
         success: false,
+        cached: true,
         error: "EIA API unavailable",
-        message: "Using cached data"
+        message: "Using cached data",
+        latestDate: cached?.latestDate ?? null,
+        latestHH: cached?.latestHH ?? null,
       });
     }
 
@@ -46,9 +63,13 @@ export async function GET(request: Request) {
     const hhPrices = eiaData.response?.data || [];
 
     if (hhPrices.length === 0) {
+      const cached = await getCachedLatest();
       return NextResponse.json({
         success: false,
-        error: "No data from EIA"
+        cached: true,
+        error: "No data from EIA",
+        latestDate: cached?.latestDate ?? null,
+        latestHH: cached?.latestHH ?? null,
       });
     }
 
@@ -159,9 +180,45 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error("Price update failed:", error);
+    const cached = await getCachedLatest();
     return NextResponse.json({
       success: false,
-      error: String(error)
+      cached: true,
+      error: String(error),
+      latestDate: cached?.latestDate ?? null,
+      latestHH: cached?.latestHH ?? null,
     }, { status: 500 });
   }
+}
+
+async function getCachedLatest(): Promise<{ latestDate: string | null; latestHH: number | null } | null> {
+  try {
+    if (process.env.DATABASE_URL) {
+      const latest = await prisma.pricePoint.findFirst({
+        where: { benchmark: "HENRY_HUB" },
+        orderBy: { date: "desc" },
+      });
+      if (latest) {
+        return {
+          latestDate: latest.date.toISOString().slice(0, 10),
+          latestHH: latest.price,
+        };
+      }
+    }
+  } catch (error) {
+    console.error("Failed to read cached HH from DB:", error);
+  }
+
+  try {
+    const pricingPath = join(process.cwd(), "seed-data", "pricing-history.json");
+    const data = JSON.parse(await readFile(pricingPath, "utf-8")) as PricePoint[];
+    const hh = data.filter((point) => point.benchmark === "HENRY_HUB").sort((a, b) => b.date.localeCompare(a.date))[0];
+    if (hh) {
+      return { latestDate: hh.date, latestHH: hh.price };
+    }
+  } catch (error) {
+    console.error("Failed to read cached HH from seed:", error);
+  }
+
+  return null;
 }

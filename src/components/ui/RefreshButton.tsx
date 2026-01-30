@@ -30,10 +30,14 @@ export function RefreshButton({ lastUpdated, source }: RefreshButtonProps) {
       const updateRes = await fetch("/api/cron/update-prices?manual=1");
       const updateData = await updateRes.json();
 
-      if (updateData.success) {
+      if (updateData.success || updateData.cached) {
         // Then revalidate pages
         await fetch("/api/refresh", { method: "POST" });
-        setMessage(`Updated! Latest HH: $${updateData.latestHH?.toFixed(2)}`);
+        if (updateData.success) {
+          setMessage(`Updated! Latest HH: $${updateData.latestHH?.toFixed(2)}`);
+        } else {
+          setMessage(`Using cached data. Latest HH: $${updateData.latestHH?.toFixed(2) ?? "N/A"}`);
+        }
         // Reload after a short delay to show new data
         setTimeout(() => window.location.reload(), 1500);
       } else {
