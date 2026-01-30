@@ -1,3 +1,6 @@
+// Revalidate every 24 hours (86400 seconds) - free on Vercel
+export const revalidate = 86400;
+
 import Header from "@/components/layout/Header";
 import PageShell from "@/components/layout/PageShell";
 import { Card } from "@/components/ui/Card";

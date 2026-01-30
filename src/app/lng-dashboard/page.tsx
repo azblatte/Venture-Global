@@ -6,10 +6,11 @@ import PageShell from "@/components/layout/PageShell";
 import LNGDashboardClient from "@/components/charts/LNGDashboardClient";
 import { getMeta, getPricingHistory } from "@/lib/seed";
 import { buildLNGDashboardData } from "@/lib/lng-dashboard";
+import { getCargoWeekly } from "@/lib/cargo";
 
 export default async function LngDashboardPage() {
-  const [pricing, meta] = await Promise.all([getPricingHistory(), getMeta()]);
-  const initialData = buildLNGDashboardData(pricing, meta);
+  const [pricing, meta, cargo] = await Promise.all([getPricingHistory(), getMeta(), getCargoWeekly()]);
+  const initialData = buildLNGDashboardData(pricing, meta, cargo);
 
   return (
     <PageShell>

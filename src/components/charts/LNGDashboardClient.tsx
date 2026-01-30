@@ -248,7 +248,10 @@ export default function LNGDashboardClient({ initialData }: LNGDashboardClientPr
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-sm font-semibold text-slate-900">LNG Export Analytics</p>
-            <p className="text-xs text-slate-500">EIA Henry Hub + estimated TTF/JKM spreads</p>
+            <p className="text-xs text-slate-500">
+              Cargoes: {data.cargoSource} · Coverage {data.cargoCoveragePct}% real
+            </p>
+            <p className="text-xs text-slate-500">Prices: EIA Henry Hub + estimated TTF/JKM spreads</p>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-xs text-slate-400">

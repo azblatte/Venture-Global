@@ -124,6 +124,53 @@ export default function Vg101Page() {
 
       <section>
         <Card>
+          <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Frequently Asked Questions</h3>
+          <div className="mt-4 space-y-4">
+            {[
+              {
+                q: "Why is VG stock volatile?",
+                a: "VG is a growth company with heavy project execution risk. Stock moves on construction updates, legal news (arbitration with offtakers), and macro LNG spreads. High beta is normal until projects stabilize.",
+              },
+              {
+                q: "What are the arbitration disputes about?",
+                a: "Some buyers (Shell, BP, etc.) claimed VG sold commissioning cargoes at spot prices instead of delivering under contract. VG argues commissioning volumes are separate. Most disputes have been resolved or settled as of late 2025.",
+              },
+              {
+                q: "How does VG make money?",
+                a: "Two ways: (1) Fixed liquefaction fees from 20-year SPAs (~$2/MMBtu), providing stable cash flow. (2) Spot sales capturing TTF-HH or JKM-HH spreads during commissioning or when contracts allow flexibility.",
+              },
+              {
+                q: "What happens if gas spreads collapse?",
+                a: "Long-term SPAs are take-or-pay with fixed fees, so contracted revenue is protected. Spot upside shrinks, but debt service is covered. VG is less exposed than pure merchant LNG players.",
+              },
+              {
+                q: "When will VG be profitable / cash flow positive?",
+                a: "Calcasieu Pass is already generating cash. Plaquemines ramp through 2026 adds significant EBITDA. Consensus expects strong free cash flow by 2027 as capex winds down and more trains come online.",
+              },
+              {
+                q: "What's the bear case?",
+                a: "Execution delays, cost overruns, or major legal losses could hurt. Long-term, global LNG oversupply (Qatar, other US projects) could compress spreads. Regulatory risk if US restricts LNG exports.",
+              },
+              {
+                q: "What's the bull case?",
+                a: "VG becomes a top-3 global LNG exporter by 2028. Low-cost modular approach yields industry-leading margins. Europe/Asia demand stays strong, spreads remain wide, and spot premiums boost returns.",
+              },
+              {
+                q: "How do I track VG performance?",
+                a: "This dashboard! Watch spreads (Pricing), cargo cadence (LNG Dashboard), fleet movements (Fleet Tracker), and news for legal/regulatory updates.",
+              },
+            ].map((faq, i) => (
+              <div key={i} className="rounded-xl border border-slate-200/60 bg-white/70 p-4">
+                <p className="text-sm font-semibold text-slate-900">{faq.q}</p>
+                <p className="mt-2 text-sm text-slate-600">{faq.a}</p>
+              </div>
+            ))}
+          </div>
+        </Card>
+      </section>
+
+      <section>
+        <Card>
           <h3 className="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">Glossary</h3>
           <div className="mt-4 grid gap-4 text-sm text-slate-600 sm:grid-cols-2">
             <div>

@@ -14,6 +14,7 @@ export interface WeeklyLNGSnapshot {
   ttfHh: number;
   jkmHh: number;
   profitabilityFlag: boolean;
+  isRealCargo: boolean;
 }
 
 export interface LNGDashboardKpis {
@@ -31,6 +32,8 @@ export interface LNGDashboardData {
   kpis: LNGDashboardKpis;
   weekly: WeeklyLNGSnapshot[];
   table: WeeklyLNGSnapshot[];
+  cargoSource: string;
+  cargoCoveragePct: number;
 }
 
 interface WeeklyAggregate {
@@ -40,6 +43,14 @@ interface WeeklyAggregate {
   countTTF: number;
   sumJKM: number;
   countJKM: number;
+}
+
+export interface WeeklyCargoRecord {
+  week: string;
+  usTotalCargoes: number;
+  plaqueminesCargoes: number;
+  calcasieuCargoes: number;
+  source: string;
 }
 
 function toWeekKey(dateStr: string) {
@@ -57,7 +68,11 @@ function pseudoNoise(index: number) {
   return raw - Math.floor(raw);
 }
 
-export function buildLNGDashboardData(pricing: PricePoint[], meta: SiteMeta): LNGDashboardData {
+export function buildLNGDashboardData(
+  pricing: PricePoint[],
+  meta: SiteMeta,
+  cargoWeekly: WeeklyCargoRecord[] = []
+): LNGDashboardData {
   const weeklyMap = new Map<string, WeeklyAggregate>();
 
   for (const point of pricing) {
@@ -98,19 +113,26 @@ export function buildLNGDashboardData(pricing: PricePoint[], meta: SiteMeta): LN
     };
   });
 
+  const cargoMap = new Map(cargoWeekly.map((item) => [item.week, item]));
   const weekly: WeeklyLNGSnapshot[] = weeklyPricing.map((price, index) => {
     const seasonal = Math.sin((index / 52) * Math.PI * 2) * 4;
     const trend = index * 0.05;
     const noise = pseudoNoise(index) * 3;
-    const usTotal = clamp(Math.round(30 + seasonal + trend + noise), 12, 50);
+    const modeledUsTotal = clamp(Math.round(30 + seasonal + trend + noise), 12, 50);
 
     const vgShare = 0.15 + 0.03 * Math.sin(index / 13);
-    const vgTotal = clamp(Math.round(usTotal * vgShare + 1), 2, 16);
+    const modeledVgTotal = clamp(Math.round(modeledUsTotal * vgShare + 1), 2, 16);
 
     const date = new Date(`${price.week}T00:00:00Z`);
     const plaqueminesRatio = date < new Date("2024-07-01") ? 0.2 : date < new Date("2025-07-01") ? 0.45 : 0.6;
-    const plaqueminesCargoes = clamp(Math.round(vgTotal * plaqueminesRatio), 0, vgTotal);
-    const calcasieuCargoes = clamp(vgTotal - plaqueminesCargoes, 0, vgTotal);
+    const modeledPlaquemines = clamp(Math.round(modeledVgTotal * plaqueminesRatio), 0, modeledVgTotal);
+    const modeledCalcasieu = clamp(modeledVgTotal - modeledPlaquemines, 0, modeledVgTotal);
+
+    const realCargo = cargoMap.get(price.week);
+    const usTotal = realCargo?.usTotalCargoes ?? modeledUsTotal;
+    const plaqueminesCargoes = realCargo?.plaqueminesCargoes ?? modeledPlaquemines;
+    const calcasieuCargoes = realCargo?.calcasieuCargoes ?? modeledCalcasieu;
+    const vgTotal = plaqueminesCargoes + calcasieuCargoes;
 
     const ttfHh = price.ttf - price.hh;
     const jkmHh = price.jkm - price.hh;
@@ -127,6 +149,7 @@ export function buildLNGDashboardData(pricing: PricePoint[], meta: SiteMeta): LN
       ttfHh: Number(ttfHh.toFixed(2)),
       jkmHh: Number(jkmHh.toFixed(2)),
       profitabilityFlag: ttfHh > 5 || jkmHh > 5,
+      isRealCargo: Boolean(realCargo),
     };
   });
 
@@ -155,10 +178,17 @@ export function buildLNGDashboardData(pricing: PricePoint[], meta: SiteMeta): LN
     yoyVgGrowthPct: Number(yoy.toFixed(1)),
   };
 
+  const realCount = weekly.filter((item) => item.isRealCargo).length;
+  const cargoSource = realCount
+    ? "EIA Weekly Natural Gas Update (Bloomberg shipping data)"
+    : "Modeled (placeholder)";
+
   return {
     meta,
     kpis,
     weekly,
     table: weekly.slice(-10).reverse(),
+    cargoSource,
+    cargoCoveragePct: weekly.length ? Number(((realCount / weekly.length) * 100).toFixed(1)) : 0,
   };
 }
