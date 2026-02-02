@@ -6,6 +6,7 @@ import SpreadAreaChart from "@/components/charts/SpreadAreaChart";
 import { getPricingHistory, getMeta } from "@/lib/seed";
 import { calculateSpreads, latestByBenchmark, SHIPPING_US_EU, SHIPPING_US_ASIA } from "@/lib/pricing";
 import { RefreshButton } from "@/components/ui/RefreshButton";
+import LivePriceWidgets from "@/components/charts/LivePriceWidgets";
 
 // Revalidate every 24 hours (86400 seconds) - free on Vercel
 export const revalidate = 86400;
@@ -52,14 +53,24 @@ export default async function PricingPage() {
       />
 
       <section>
-        <Card className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-sm font-semibold text-slate-900">Pricing refresh controls</p>
-            <p className="text-xs text-slate-500">
-              Henry Hub is sourced from EIA (free). TTF/JKM are estimated spreads unless you add a paid provider.
-            </p>
+        <Card className="p-4">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Data Source</p>
+              <p className="text-xs text-slate-500">
+                Showing seed data. To enable live updates, add EIA_API_KEY to .env
+              </p>
+              <a
+                href="https://www.eia.gov/opendata/register.php"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-2 inline-block text-xs text-blue-600 hover:underline"
+              >
+                Get free EIA API key →
+              </a>
+            </div>
+            <RefreshButton lastUpdated={meta.lastPriceUpdate} source={meta.source} />
           </div>
-          <RefreshButton lastUpdated={meta.lastPriceUpdate} source={meta.source} />
         </Card>
       </section>
 
@@ -135,6 +146,8 @@ export default async function PricingPage() {
           <SpreadAreaChart data={spreadSeries} />
         </Card>
       </section>
+
+      <LivePriceWidgets />
 
       <section>
         <Card>
