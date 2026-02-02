@@ -5,9 +5,10 @@ import { setPricingCache } from "@/lib/pricing-cache";
 import type { PricePoint } from "@/types/pricing";
 import { prisma } from "@/lib/db";
 
-// EIA API for Henry Hub natural gas spot prices (free, 1-day delayed)
-const EIA_API_KEY = process.env.EIA_API_KEY || ""; // Optional - works without key but rate limited
-const EIA_HH_URL = `https://api.eia.gov/v2/natural-gas/pri/fut/data/?api_key=${EIA_API_KEY}&frequency=daily&data[0]=value&facets[series][]=RNGWHHD&sort[0][column]=period&sort[0][direction]=desc&length=90`;
+// EIA API for Henry Hub natural gas futures prices (free, but data may be delayed)
+const EIA_API_KEY = process.env.EIA_API_KEY || "";
+// Using RNGC1 series (Natural Gas Futures Contract 1) - URL encoded for reliability
+const EIA_HH_URL = `https://api.eia.gov/v2/natural-gas/pri/fut/data/?api_key=${EIA_API_KEY}&frequency=daily&data%5B0%5D=value&facets%5Bseries%5D%5B%5D=RNGC1&sort%5B0%5D%5Bcolumn%5D=period&sort%5B0%5D%5Bdirection%5D=desc&length=90`;
 
 // For TTF/JKM we'd need paid APIs, so we'll use proxy estimates based on historical spreads
 // In production, you'd integrate with ICE, Platts, or Argus
@@ -16,7 +17,7 @@ interface EIAResponse {
   response: {
     data: Array<{
       period: string;
-      value: number;
+      value: string | number; // EIA returns string values
     }>;
   };
 }
@@ -80,7 +81,8 @@ export async function GET(request: Request) {
     const newPrices: PricePoint[] = [];
 
     for (const entry of hhPrices.slice(0, 90)) {
-      const hhPrice = entry.value;
+      const hhPrice = typeof entry.value === "string" ? parseFloat(entry.value) : entry.value;
+      if (isNaN(hhPrice)) continue; // Skip invalid entries
       const date = entry.period;
 
       // Add Henry Hub (actual data)
@@ -171,11 +173,14 @@ export async function GET(request: Request) {
       await writeFile(metaPath, JSON.stringify(meta, null, 2));
     }
 
+    const latestValue = hhPrices[0]?.value;
+    const latestHH = typeof latestValue === "string" ? parseFloat(latestValue) : latestValue;
+
     return NextResponse.json({
       success: true,
       updated: newPrices.length / 3, // Number of days updated
       latestDate: hhPrices[0]?.period,
-      latestHH: hhPrices[0]?.value,
+      latestHH: latestHH,
       timestamp: meta.lastPriceUpdate,
     });
   } catch (error) {
