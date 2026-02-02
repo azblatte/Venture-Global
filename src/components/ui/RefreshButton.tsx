@@ -7,9 +7,11 @@ interface RefreshButtonProps {
   source: string;
 }
 
+type MessageType = "success" | "warning" | "error";
+
 export function RefreshButton({ lastUpdated, source }: RefreshButtonProps) {
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
+  const [message, setMessage] = useState<{ text: string; type: MessageType } | null>(null);
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
@@ -30,21 +32,24 @@ export function RefreshButton({ lastUpdated, source }: RefreshButtonProps) {
       const updateRes = await fetch("/api/cron/update-prices?manual=1");
       const updateData = await updateRes.json();
 
-      if (updateData.success || updateData.cached) {
-        // Then revalidate pages
+      if (updateData.success) {
+        // Fresh data fetched - revalidate pages
         await fetch("/api/refresh", { method: "POST" });
-        if (updateData.success) {
-          setMessage(`Updated! Latest HH: $${updateData.latestHH?.toFixed(2)}`);
-        } else {
-          setMessage(`Using cached data. Latest HH: $${updateData.latestHH?.toFixed(2) ?? "N/A"}`);
-        }
-        // Reload after a short delay to show new data
+        setMessage({ text: `Updated! Latest HH: $${updateData.latestHH?.toFixed(2)}`, type: "success" });
+        setTimeout(() => window.location.reload(), 1500);
+      } else if (updateData.cached) {
+        // No fresh data but have cache - show warning
+        await fetch("/api/refresh", { method: "POST" });
+        const reason = updateData.error === "Missing EIA_API_KEY"
+          ? "No API key configured"
+          : "Using cached data";
+        setMessage({ text: `${reason}. HH: $${updateData.latestHH?.toFixed(2) ?? "N/A"}`, type: "warning" });
         setTimeout(() => window.location.reload(), 1500);
       } else {
-        setMessage(updateData.error || "Update failed");
+        setMessage({ text: updateData.error || "Update failed", type: "error" });
       }
-    } catch (error) {
-      setMessage("Refresh failed");
+    } catch {
+      setMessage({ text: "Refresh failed", type: "error" });
     } finally {
       setIsRefreshing(false);
     }
@@ -86,7 +91,17 @@ export function RefreshButton({ lastUpdated, source }: RefreshButtonProps) {
         )}
       </button>
       {message && (
-        <span className="text-xs text-emerald-600">{message}</span>
+        <span
+          className={`text-xs ${
+            message.type === "success"
+              ? "text-emerald-600"
+              : message.type === "warning"
+              ? "text-amber-600"
+              : "text-rose-600"
+          }`}
+        >
+          {message.text}
+        </span>
       )}
     </div>
   );

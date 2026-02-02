@@ -11,6 +11,7 @@ const navItems = [
   { href: "/fleet", label: "Fleet" },
   { href: "/terminals", label: "Terminals" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/futures", label: "Futures Curve" },
   { href: "/lng-dashboard", label: "LNG Dashboard" },
   { href: "/contracts", label: "Contracts" },
   { href: "/news", label: "News" },

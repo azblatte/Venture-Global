@@ -10,6 +10,7 @@ const navItems = [
   { href: "/fleet", label: "Fleet Tracker" },
   { href: "/terminals", label: "Terminals" },
   { href: "/pricing", label: "Pricing Lab" },
+  { href: "/futures", label: "Futures Curve" },
   { href: "/lng-dashboard", label: "LNG Dashboard" },
   { href: "/contracts", label: "SPA Contracts" },
   { href: "/news", label: "News & Events" },
